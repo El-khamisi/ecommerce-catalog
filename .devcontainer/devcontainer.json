@@ -12,7 +12,10 @@
 	"workspaceFolder": "/home/node/workspace",
 	"customizations": {
 		"vscode": {
-			"extensions": []
+			"extensions": [
+				"mhutchie.git-graph",
+				"Prisma.prisma"
+			]
 		}
 	}
 }
