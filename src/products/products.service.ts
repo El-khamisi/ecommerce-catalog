@@ -1,11 +1,25 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
-import { ListQueryDto } from "./dtos";
+import { CreateOneBodyDto, ListQueryDto, UpdateOneBodyDto } from "./dtos";
 import { ProductsEntity, ProductEntity } from "./entities";
 
 @Injectable()
 export class ProductsService {
     constructor(private prisma: PrismaService) { }
+
+    createOne(body: CreateOneBodyDto) {
+        return this.prisma.product.create({
+            data: body
+        })
+    }
+
+    updateOne(id: string, body: UpdateOneBodyDto) {
+        return this.prisma.product.update({
+            where: { id },
+            data: body
+        })
+
+    }
 
     async listProducts(query: ListQueryDto) {
         const { page, limit } = query;

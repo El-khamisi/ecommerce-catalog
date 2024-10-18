@@ -1,7 +1,7 @@
-import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional, OmitType, PartialType } from "@nestjs/swagger";
 import { Prisma } from "@prisma/client";
 import { Type } from "class-transformer";
-import { IsIn, IsNotEmpty, IsOptional, IsPositive, IsString } from "class-validator";
+import { IsArray, IsIn, IsNotEmpty, IsOptional, IsPositive, IsString } from "class-validator";
 
 export class ListQueryDto {
     @IsOptional()
@@ -56,3 +56,30 @@ export class FindOneParamDto {
     @ApiProperty()
     id: string;
 }
+
+export class CreateOneBodyDto {
+
+    @IsNotEmpty()
+    @IsString()
+    @ApiProperty()
+    name: string
+
+    @IsOptional()
+    @IsString()
+    @ApiPropertyOptional()
+    description: string
+
+    @IsNotEmpty()
+    @IsPositive()
+    @Type(() => Number)
+    @ApiProperty()
+    price: number
+
+    @IsOptional()
+    @IsArray()
+    @IsNotEmpty({ each: true })
+    @ApiPropertyOptional()
+    images: string[]
+}
+
+export class UpdateOneBodyDto extends PartialType(CreateOneBodyDto) { }
