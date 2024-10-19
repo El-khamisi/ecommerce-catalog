@@ -1,9 +1,19 @@
 import { ApiProperty, ApiPropertyOptional, OmitType, PartialType } from "@nestjs/swagger";
 import { Prisma } from "@prisma/client";
-import { Type } from "class-transformer";
-import { IsArray, IsIn, IsNotEmpty, IsOptional, IsPositive, IsString } from "class-validator";
+import { Transform, Type } from "class-transformer";
+import { IsArray, IsEnum, IsIn, IsNotEmpty, IsOptional, IsPositive, IsString, ValidateNested } from "class-validator";
+
+export enum DisplayType {
+    Color = 'color',
+    Radio = 'radio',
+    Dropdown = 'dropdown',
+    Checkbox = 'checkbox',
+}
+
 
 export class ListQueryDto {
+    others: string[];
+
     @IsOptional()
     @IsString()
     @ApiPropertyOptional({ description: 'search param' })
@@ -57,6 +67,24 @@ export class FindOneParamDto {
     id: string;
 }
 
+
+export class ProductAttributesDto {
+    @IsEnum(DisplayType)
+    @IsNotEmpty()
+    @ApiProperty({ enum: DisplayType })
+    type: string;
+
+    @IsNotEmpty()
+    @IsString()
+    @ApiProperty()
+    name: string[];
+
+    @IsArray()
+    @IsNotEmpty()
+    @ApiProperty()
+    values: string[];
+}
+
 export class CreateOneBodyDto {
 
     @IsNotEmpty()
@@ -72,7 +100,7 @@ export class CreateOneBodyDto {
     @IsNotEmpty()
     @IsPositive()
     @Type(() => Number)
-    @ApiProperty()
+    @ApiProperty({ example: 520 })
     price: number
 
     @IsOptional()
@@ -80,6 +108,13 @@ export class CreateOneBodyDto {
     @IsNotEmpty({ each: true })
     @ApiPropertyOptional()
     images: string[]
-}
 
+    @IsOptional()
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => ProductAttributesDto)
+    @ApiPropertyOptional({ type: [ProductAttributesDto] })
+    attributes: ProductAttributesDto[];
+}
 export class UpdateOneBodyDto extends PartialType(CreateOneBodyDto) { }
+

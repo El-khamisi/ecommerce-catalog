@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseArrayPipe, Patch, Post, Query } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ProductEntity, ProductsEntity } from './entities';
@@ -23,8 +23,8 @@ export class ProductsController {
 
     @Get()
     @ApiOkResponse({ type: ProductsEntity })
-    listProducts(@Query() query: ListQueryDto) {
-        return this.productsService.listProducts(query);
+    listProducts(@Query() query: ListQueryDto, @Query('others', new ParseArrayPipe({ separator: ',', optional: true })) others: any) {
+        return this.productsService.listProducts({ ...query, others });
     }
 
     @Get(':id')

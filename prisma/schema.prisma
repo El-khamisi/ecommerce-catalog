@@ -11,8 +11,9 @@ model Product {
     id          String   @id @default(uuid())
     name        String
     description String?
-    price       Float
+    price       Decimal  @db.Decimal(10, 2)
     images      String[] @default([])
+    attributes  Json?
 
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
