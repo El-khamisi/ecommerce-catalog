@@ -72,6 +72,15 @@ function createProduct() {
     const description = document.getElementById('inputDesc').value
     const price = document.getElementById('inputPrice').value
     const images = document.getElementById('inputimages').files
+    const attrs = document.querySelectorAll('.inputAttrs')
+
+    let attributes = []
+    for (attr of attrs) {
+        const type = attr.children[2].value
+        const name = attr.children[1].children[0].value
+        const values = attr.children[1].children[1].value
+        attributes.push({ type, name, values: values.split(',') })
+    }
 
     const formData = new FormData()
     for (image of images) {
@@ -88,8 +97,30 @@ function createProduct() {
                 name,
                 description,
                 price,
+                attributes,
                 images: data
             })
         })).then(response => response.json())
 }
 
+
+const attrsDiv = document.getElementById('attrsDiv')
+function moreAttr() {
+    let child = document.createElement('div')
+    child.className = 'inputAttrs'
+
+    child.innerHTML = `<label for="inputAttrs" class="col-sm-2 col-form-label">Product Custom Attributes</label>
+    <div class="col-sm-5">
+        <input type="text" class="form-control"  placeholder="Enter Attributes Name">
+        <input type="text" class="form-control"  placeholder="Enter Attributes Values">
+    </div>
+    <select class="col-sm-5" class="displayType" name="method">
+        <option value="color" selected>Color Dots</option>
+        <option value="radio">Choose one</option>
+        <option value="dropdown">Dropdown Menu</option>
+        <option value="checkbox">Multi-choice</option>
+    </select>`
+
+    attrsDiv.appendChild(child)
+
+}

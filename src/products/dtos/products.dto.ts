@@ -77,7 +77,7 @@ export class ProductAttributesDto {
     @IsNotEmpty()
     @IsString()
     @ApiProperty()
-    name: string[];
+    name: string;
 
     @IsArray()
     @IsNotEmpty()
