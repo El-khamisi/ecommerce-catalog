@@ -3,11 +3,13 @@ import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { BucketAlreadyExists, BucketAlreadyOwnedByYou, CreateBucketCommand, PutBucketPolicyCommand, S3Client } from '@aws-sdk/client-s3';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 async function bootstrap() {
   const logger = new Logger('bootstrap');
 
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.useGlobalPipes(
     new ValidationPipe({ whitelist: true, transform: true }),
   );
@@ -49,6 +51,10 @@ async function bootstrap() {
     customSiteTitle: 'E-commerce Catalog REST API',
   });
 
+
+  app.useStaticAssets(join(__dirname, '..', 'public'))
+  app.setBaseViewsDir(join(__dirname, '..', 'public/views'));
+  app.setViewEngine('hbs');
 
   const port = process.env.PORT ?? 3000
   await app.listen(port);

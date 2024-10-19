@@ -24,7 +24,7 @@ export class AppService {
     )
 
     const uploadFiles = await Promise.allSettled(fileCommands.map(command => this.s3.send(command)))
-    const baseUrl = 'http:localhost:9000/' + this.env.getOrThrow('AWS_S3_BUCKET')
+    const baseUrl = 'http://localhost:9000/' + this.env.getOrThrow('AWS_S3_BUCKET')
     return uploadFiles.map(({ status }, i) => status && baseUrl + '/' + fileCommands[i].input.Key)
   }
 }

@@ -1,6 +1,6 @@
-import { ApiProperty, ApiPropertyOptional, OmitType, PartialType } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional, PartialType } from "@nestjs/swagger";
 import { Prisma } from "@prisma/client";
-import { Transform, Type } from "class-transformer";
+import { Type } from "class-transformer";
 import { IsArray, IsEnum, IsIn, IsNotEmpty, IsOptional, IsPositive, IsString, ValidateNested } from "class-validator";
 
 export enum DisplayType {
@@ -12,7 +12,7 @@ export enum DisplayType {
 
 
 export class ListQueryDto {
-    others: string[];
+    others?: string[];
 
     @IsOptional()
     @IsString()

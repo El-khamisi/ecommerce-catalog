@@ -23,7 +23,7 @@ export class ProductsController {
 
     @Get()
     @ApiOkResponse({ type: ProductsEntity })
-    listProducts(@Query() query: ListQueryDto, @Query('others', new ParseArrayPipe({ separator: ',', optional: true })) others: any) {
+    listProducts(@Query() query: ListQueryDto, @Query('others', new ParseArrayPipe({ separator: ',', optional: true, skipMissingProperties: true })) others: any) {
         return this.productsService.listProducts({ ...query, others });
     }
 
